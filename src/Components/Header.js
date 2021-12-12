@@ -2,15 +2,15 @@ import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import {
+  Button,
   Navbar,
-  Badge,
   Dropdown,
   Nav,
   Container,
   FormControl,
 } from "react-bootstrap";
 import { CartState } from "./Context/Context";
-// import { Navbar, Container, FormControl } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const {
@@ -67,6 +67,11 @@ const Header = () => {
                       />
                     </span>
                   ))}
+                  <Link to="/cart">
+                    <Button style={{ width: "95%", margin: "0, 10px" }}>
+                      Go To Cart
+                    </Button>
+                  </Link>
                 </>
               ) : (
                 <span style={{ padding: 10 }}>Cart is Empty</span>
