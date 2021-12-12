@@ -1,5 +1,6 @@
 import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
+import { AiFillDelete } from "react-icons/ai";
 import {
   Navbar,
   Badge,
@@ -8,9 +9,14 @@ import {
   Container,
   FormControl,
 } from "react-bootstrap";
+import { CartState } from "./Context/Context";
 // import { Navbar, Container, FormControl } from "react-bootstrap";
 
 const Header = () => {
+  const {
+    state: { cart },
+    dispatch,
+  } = CartState();
   return (
     <Navbar bg="dark" variant="dark" style={{ height: 80 }}>
       <Container>
@@ -33,10 +39,38 @@ const Header = () => {
                 fontSize="25px"
                 margin="0 10px 0 0"
               />
-              {10}
+              {cart.length}
             </Dropdown.Toggle>
             <Dropdown.Menu align="end" style={{ minWidth: 300 }}>
-              <span style={{ padding: 10 }}>Cart is Empty</span>
+              {cart.length > 0 ? (
+                <>
+                  {cart.map((prod) => (
+                    <span className="cartitem" key={prod.id}>
+                      <img
+                        src={prod.image}
+                        className="cartItemImg"
+                        alt={prod.name}
+                      />
+                      <div className="cartItemDetail">
+                        <span>{prod.name}</span>
+                        <span>${prod.price.split(".")[0]}</span>
+                      </div>
+                      <AiFillDelete
+                        fontSize="20px"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          dispatch({
+                            type: "REMOVE_FROM_CART",
+                            payload: prod,
+                          });
+                        }}
+                      />
+                    </span>
+                  ))}
+                </>
+              ) : (
+                <span style={{ padding: 10 }}>Cart is Empty</span>
+              )}
             </Dropdown.Menu>
           </Dropdown>
         </Nav>
