@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { ListGroup, Row, Col, Button, Image, From } from "react-bootstrap";
+import { ListGroup, Row, Col, Button, Image, Form } from "react-bootstrap";
 import { CartState } from "./Context/Context";
+import { AiFillDelete } from "react-icons/ai";
 import Rating from "./Rating";
 
 const Cart = () => {
@@ -12,7 +13,9 @@ const Cart = () => {
   const [total, setTotal] = useState();
 
   useEffect(() => {
-    setTotal(cart.reduce((acc, curr) => acc + Number(curr.price), 0));
+    setTotal(
+      cart.reduce((acc, curr) => acc + Number(curr.price) * curr.quantity, 0)
+    );
   }, [cart]);
 
   return (
@@ -33,11 +36,37 @@ const Cart = () => {
                   <Rating rating={prod.ratings}></Rating>
                 </Col>
                 <Col md={2}>
-                  <From.Control as="select" value={prod.quantity}>
-                    {[...Array(prod.inStock).key()].map((x) => (
+                  <Form.Control
+                    as="select"
+                    value={prod.quantity}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "CHANGE_CART_QUANTITY",
+                        payload: {
+                          id: prod.id,
+                          quantity: e.target.value,
+                        },
+                      })
+                    }
+                  >
+                    {[...Array(prod.inStock).keys()].map((x) => (
                       <option key={x + 1}>{x + 1}</option>
                     ))}
-                  </From.Control>
+                  </Form.Control>
+                </Col>
+                <Col>
+                  <Button
+                    type="button"
+                    variant="light"
+                    onClick={() => {
+                      dispatch({
+                        type: "REMOVE_FROM_CART",
+                        payload: prod,
+                      });
+                    }}
+                  >
+                    <AiFillDelete fontSize="20px" />
+                  </Button>
                 </Col>
               </Row>
             </ListGroup.Item>
