@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ListGroup, Row, Col, Button, Image, Form } from "react-bootstrap";
 import { CartState } from "./Context/Context";
 import { AiFillDelete } from "react-icons/ai";
+import { Link } from "react-router-dom";
 import Rating from "./Rating";
 
 const Cart = () => {
@@ -76,9 +77,11 @@ const Cart = () => {
       <div className="filters summary">
         <span className="title">Subtotal {cart.length} items</span>
         <span style={{ fontWeight: 700, fontSize: 20 }}>Total: {total} </span>
-        <Button type="button" disabled={cart.length === 0}>
-          Proceed To CheckOut
-        </Button>
+        <Link to="/checkout">
+          <Button type="button" disabled={cart.length === 0}>
+            Proceed To CheckOut
+          </Button>
+        </Link>
       </div>
     </div>
   );
